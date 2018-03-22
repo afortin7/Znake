@@ -1,0 +1,101 @@
+﻿<Window x:Class="Znake.Views.ClientServeurMain"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        xmlns:uc="clr-namespace:Znake.Views"
+        Title="Application clavardage" SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterScreen"
+        DataContext="{Binding ZnakeViewModel, Source={StaticResource Locator}}">
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Menu>
+            <MenuItem Header="Profile" Command="{Binding VoirProfileCommand}"/>
+            <MenuItem Header="Déconnexion" Command="{Binding DeconnexionCommand}"/>
+        </Menu>
+        <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Vertical">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <GroupBox Header="Salles" FontSize="20" FontWeight="Bold" Grid.Row="0" Grid.Column="0">
+                    <ListView ItemsSource="{Binding Salles}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Nom" Width="120" >
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock DataContext="{Binding}" Text="{Binding Nom}" TextDecorations="Underline">
+                                                <TextBlock.InputBindings>
+                                                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=DataContext.AllerSalleCommand, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" CommandParameter="{Binding}"/>
+                                                </TextBlock.InputBindings>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Description" Width="200" DisplayMemberBinding="{Binding Description}" />
+                                <GridViewColumn Header="Abonnement" Width="150">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button
+                                                Content="S'abonner"
+                                                Margin="0"
+                                                Padding="5"
+                                                VerticalAlignment="Center"
+                                                Command="{Binding Path=DataContext.SabonnerCommand, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"
+                                                CommandParameter="{Binding}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </GroupBox>
+                <GroupBox Header="Utilisateurs" FontSize="20" FontWeight="Bold" Grid.Row="1" Grid.Column="0"  Margin="10" >
+                    <ListView ItemsSource="{Binding Utilisateurs}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Nom" Width="120" DisplayMemberBinding="{Binding Client.Nom}" />
+                                <GridViewColumn Header="Etat" Width="Auto">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image Width="16" Height="16">
+                                                <Image.Style>
+                                                    <Style TargetType="{x:Type Image}">
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Client.Etat}" Value="False">
+                                                                <Setter Property="Source" Value="../Ressources/shapeimage_1.png"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Client.Etat}" Value="True">
+                                                                <Setter Property="Source" Value="../Ressources/Rond_vert.png"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Image.Style>
+                                            </Image>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </GroupBox>
+            </Grid>
+        </StackPanel>
+        <ContentControl Grid.Row="1" Grid.Column="1" Content="{Binding ClavardageHudUC}" Margin="10" />
+    </Grid>
+</Window>

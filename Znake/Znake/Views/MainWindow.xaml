@@ -1,0 +1,71 @@
+﻿<Window x:Class="Znake.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Znake Game"
+        SizeToContent="WidthAndHeight"
+        xmlns:c="clr-namespace:Znake.Auxiliary.Validation"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        xmlns:enum="clr-namespace:Znake.Models"
+        DataContext="{Binding Main, Source={StaticResource Locator}}">
+
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding NordCommand}" Key="Up" CommandParameter="Nord"/>
+        <KeyBinding Command="{Binding SudCommand}" Key="Down" CommandParameter="Sud"/>
+        <KeyBinding Command="{Binding OuestCommand}" Key="Right" CommandParameter="Ouest"/>
+        <KeyBinding Command="{Binding EstCommand}" Key="Left" CommandParameter="Est"/>
+    </Window.InputBindings>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Column="0" Grid.Row="0">
+            <MenuItem Command="{Binding TestCommand}" Header="Test"/>
+        </Menu>
+        <ItemsControl ItemsSource="{Binding Grille}" Grid.Row="1" Grid.Column="0">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Rows="1"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <ItemsControl ItemsSource="{Binding Colonne}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="1"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="1"
+                                        BorderBrush="#FF000000"
+                                        VerticalAlignment="Top">
+                                    <Image Height="25" Width="25" Margin="0" >
+                                        <Image.Style>
+                                            <Style TargetType="{x:Type Image}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=Etat}" Value="{x:Static enum:Etat.Pomme }">
+                                                        <Setter Property="Source" Value="../Ressources/apple_2-512.png"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Path=Etat}" Value="{x:Static enum:Etat.Serpent }">
+                                                        <Setter Property="Source" Value="../Ressources/carrevert.jpg"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</Window>
